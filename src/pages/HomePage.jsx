@@ -16,7 +16,8 @@ import {
   CheckCircle2, 
   Layers,
   Building2,
-  Heart
+  Heart,
+  X
 } from 'lucide-react';
 import { IMPACT_METRICS, HOW_IT_WORKS_STEPS } from '../data/mockData';
 
@@ -25,13 +26,17 @@ export default function HomePage({
   setCurrentPage, 
   onOpenCallSim, 
   currentRole,
-  onClaimMeal
+  setCurrentRole,
+  onClaimMeal,
+  onOpenDonorPage
 }) {
   const [heroCardIndex, setHeroCardIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedDistrict, setSelectedDistrict] = useState('ALL');
   const [requestNotice, setRequestNotice] = useState(null);
+  const [highlightedMealId, setHighlightedMealId] = useState(null);
+  const [selectedMealForModal, setSelectedMealForModal] = useState(null);
 
   const categories = ['ALL', 'Prepared meals', 'Rice & Curry', 'Bakery items', 'Bread & Roti', 'Fruits', 'Vegetables'];
   const districts = ['ALL', 'Vavuniya', 'Jaffna', 'Kilinochchi', 'Mannar', 'Anuradhapura'];
@@ -44,6 +49,31 @@ export default function HomePage({
 
   const handlePrevHeroMeal = () => {
     setHeroCardIndex((prev) => (prev - 1 + foodListings.length) % foodListings.length);
+  };
+
+  // Scroll directly to the selected meal in the Available Food section and highlight it
+  const handleViewDetails = (meal) => {
+    // Clear any active search or category filters to ensure this meal is rendered
+    setSelectedCategory('ALL');
+    setSelectedDistrict('ALL');
+    setSearchQuery('');
+    setHighlightedMealId(meal.id);
+
+    // Scroll smoothly right to the specific card
+    setTimeout(() => {
+      const cardEl = document.getElementById(`meal-card-${meal.id}`);
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        const sectionEl = document.getElementById('available-food');
+        if (sectionEl) sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 80);
+
+    // Remove the highlight after 5 seconds
+    setTimeout(() => {
+      setHighlightedMealId(prev => (prev === meal.id ? null : prev));
+    }, 5000);
   };
 
   const filteredMeals = foodListings.filter((meal) => {
@@ -97,13 +127,8 @@ export default function HomePage({
                 <button 
                   type="button"
                   className="fr-btn fr-btn-primary"
-                  onClick={() => {
-                    if (currentRole === 'donor') {
-                      if (onOpenCallSim) onOpenCallSim();
-                    } else {
-                      setCurrentPage('register');
-                    }
-                  }}
+                  onClick={() => setCurrentPage('login')}
+                  title="Sign In to Donate Surplus Food"
                 >
                   Donate Surplus Food <ArrowRight size={16} />
                 </button>
@@ -217,13 +242,21 @@ export default function HomePage({
                 </div>
 
                 <div className="fr-hero-card-actions">
-                  <a 
-                    href="#available-food"
+                  <button 
+                    type="button"
                     className="fr-btn fr-btn-secondary" 
-                    style={{ fontSize: '0.84rem', padding: '8px 14px' }}
+                    style={{ fontSize: '0.84rem', padding: '8px 14px', cursor: 'pointer' }}
+                    onClick={() => {
+                      if (onOpenDonorPage) {
+                        onOpenDonorPage(currentHeroMeal);
+                      } else if (setCurrentRole) {
+                        setCurrentRole('donor');
+                      }
+                    }}
+                    title="Go to donor's page to view details"
                   >
                     View Details <ArrowRight size={14} />
-                  </a>
+                  </button>
                   <button 
                     type="button"
                     className="fr-btn fr-btn-primary" 
@@ -411,9 +444,18 @@ export default function HomePage({
           {/* Food Grid */}
           <div className="fr-food-grid">
             {filteredMeals.map((meal) => (
-              <div className="fr-food-card" key={meal.id}>
+              <div 
+                className={`fr-food-card ${highlightedMealId === meal.id ? 'highlighted' : ''}`} 
+                key={meal.id}
+                id={`meal-card-${meal.id}`}
+              >
                 <div className="fr-food-card-img-wrap">
                   <img src={meal.image} alt={meal.title} className="fr-food-card-img" />
+                  {highlightedMealId === meal.id && (
+                    <div className="fr-food-card-highlight-pill">
+                      <Sparkles size={12} /> Selected from Recent Donations
+                    </div>
+                  )}
                   <span className={`fr-badge-status ${meal.status.toLowerCase()}`}>
                     <Clock size={12} /> {meal.status}
                   </span>
@@ -440,9 +482,15 @@ export default function HomePage({
                   </p>
 
                   <div className="fr-food-card-actions">
-                    <span style={{ fontSize: '0.78rem', color: 'var(--fr-primary)', fontWeight: '600' }}>
-                      ✓ Fast Collection Available
-                    </span>
+                    <button
+                      type="button"
+                      className="fr-btn fr-btn-ghost"
+                      style={{ padding: '6px 10px', fontSize: '0.8rem', color: 'var(--fr-primary)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px' }}
+                      onClick={() => setSelectedMealForModal(meal)}
+                      title="View all specifications for this meal"
+                    >
+                      <Info size={14} /> View Details
+                    </button>
                     <button 
                       type="button"
                       className="fr-btn fr-btn-primary"
@@ -599,6 +647,110 @@ export default function HomePage({
           </div>
         </div>
       </section>
+      {/* Meal Full Details Modal */}
+      {selectedMealForModal && (
+        <div className="fr-modal-backdrop" onClick={() => setSelectedMealForModal(null)}>
+          <div className="fr-meal-detail-modal" onClick={e => e.stopPropagation()}>
+            <button 
+              className="fr-meal-modal-close-btn"
+              onClick={() => setSelectedMealForModal(null)}
+              title="Close Details"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="fr-meal-modal-img-wrap">
+              <img 
+                src={selectedMealForModal.image} 
+                alt={selectedMealForModal.title} 
+                className="fr-meal-modal-img" 
+              />
+              <span className={`fr-badge-status ${selectedMealForModal.status.toLowerCase()}`}>
+                <Clock size={12} /> {selectedMealForModal.status}
+              </span>
+              <span className="fr-badge-portions">
+                {selectedMealForModal.portions}
+              </span>
+            </div>
+
+            <div className="fr-meal-modal-body">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <Utensils size={16} color="var(--fr-primary)" />
+                <span style={{ fontWeight: 700, fontSize: '0.92rem', color: 'var(--fr-primary)' }}>
+                  {selectedMealForModal.donorName}
+                </span>
+                <span style={{ fontSize: '0.78rem', color: 'var(--fr-text-muted)' }}>
+                  • {selectedMealForModal.donorType} ({selectedMealForModal.rating}★)
+                </span>
+              </div>
+
+              <h2 style={{ fontSize: '1.38rem', fontWeight: 800, color: 'var(--fr-text-heading)', marginBottom: '12px' }}>
+                {selectedMealForModal.title}
+              </h2>
+
+              <p style={{ color: 'var(--fr-text-body)', lineHeight: 1.6, fontSize: '0.9rem', marginBottom: '18px' }}>
+                {selectedMealForModal.description}
+              </p>
+
+              <div style={{ 
+                background: 'var(--fr-bg-subtle)', 
+                border: '1px solid var(--fr-border-card)', 
+                borderRadius: '12px', 
+                padding: '14px 18px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '12px',
+                marginBottom: '20px'
+              }}>
+                <div>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--fr-text-muted)', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Available Until</span>
+                  <strong style={{ fontSize: '0.86rem', color: 'var(--fr-text-heading)', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '3px' }}>
+                    <Clock size={14} color="var(--fr-primary)" /> {selectedMealForModal.availableUntil}
+                  </strong>
+                </div>
+                <div>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--fr-text-muted)', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Location</span>
+                  <strong style={{ fontSize: '0.86rem', color: 'var(--fr-text-heading)', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '3px' }}>
+                    <MapPin size={14} color="var(--fr-primary)" /> {selectedMealForModal.location}
+                  </strong>
+                </div>
+                <div>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--fr-text-muted)', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Category</span>
+                  <strong style={{ fontSize: '0.86rem', color: 'var(--fr-text-heading)', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '3px' }}>
+                    <Layers size={14} color="var(--fr-primary)" /> {selectedMealForModal.category}
+                  </strong>
+                </div>
+                <div>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--fr-text-muted)', display: 'block', textTransform: 'uppercase', fontWeight: 700 }}>Storage Condition</span>
+                  <strong style={{ fontSize: '0.86rem', color: 'var(--fr-text-heading)', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '3px' }}>
+                    <Info size={14} color="var(--fr-primary)" /> {selectedMealForModal.storage}
+                  </strong>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button
+                  type="button"
+                  className="fr-btn fr-btn-secondary"
+                  onClick={() => setSelectedMealForModal(null)}
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="fr-btn fr-btn-primary"
+                  onClick={() => {
+                    handleRequestClick(selectedMealForModal);
+                    setSelectedMealForModal(null);
+                  }}
+                >
+                  <HeartHandshake size={16} /> Request Portions
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

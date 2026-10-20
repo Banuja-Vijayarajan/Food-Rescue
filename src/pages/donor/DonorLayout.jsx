@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  PlusCircle, ListOrdered, Inbox, CalendarClock,
+  ArrowLeft, PlusCircle, ListOrdered, Inbox, CalendarClock,
   History, Bell, User, Settings, LogOut,
   LayoutDashboard, ShieldCheck, ChevronDown, ChevronRight
 } from 'lucide-react';
@@ -23,20 +23,39 @@ const NAV_ITEMS = [
   { id: 'settings',      label: 'Settings',             icon: Settings },
 ];
 
-export default function DonorLayout({ setCurrentPage, setCurrentRole, foodListings, onMealPosted }) {
-  const [activeNav, setActiveNav] = useState('dashboard');
+export default function DonorLayout({ 
+  setCurrentPage, 
+  setCurrentRole, 
+  foodListings, 
+  onMealPosted,
+  initialNav = 'my-donations',
+  highlightedMealId = null
+}) {
+  const [activeNav, setActiveNav] = useState(initialNav || 'my-donations');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  // Return to Home Page
+  const handleBackToHome = () => {
+    if (setCurrentRole) setCurrentRole('visitor');
+    if (setCurrentPage) setCurrentPage('home');
+  };
+
   const handleSignOut = () => {
-    setCurrentRole('visitor');
-    setCurrentPage('home');
+    if (setCurrentRole) setCurrentRole('visitor');
+    if (setCurrentPage) setCurrentPage('home');
   };
 
   const renderPage = () => {
     switch (activeNav) {
       case 'dashboard':    return <DonorDashboardPage onNavigate={setActiveNav} foodListings={foodListings} />;
       case 'post-food':    return <PostFoodPage onNavigate={setActiveNav} onMealPosted={onMealPosted} />;
-      case 'my-donations': return <DonorDonationsPage onOpenPost={() => setActiveNav('post-food')} foodListings={foodListings} />;
+      case 'my-donations': return (
+        <DonorDonationsPage 
+          onOpenPost={() => setActiveNav('post-food')} 
+          foodListings={foodListings} 
+          highlightedMealId={highlightedMealId}
+        />
+      );
       case 'requests':     return <DonorRequestsPage />;
       case 'pickup':       return <DonorPickupPage />;
       default:
@@ -95,7 +114,20 @@ export default function DonorLayout({ setCurrentPage, setCurrentRole, foodListin
         </nav>
 
         <div className="fr-sidebar-footer">
-          <button className="fr-sidebar-item signout" onClick={handleSignOut} title="Sign Out">
+          {/* Back to Home Button in Sidebar */}
+          <button 
+            className="fr-sidebar-item back-home" 
+            onClick={handleBackToHome} 
+            title="Back to Home Page"
+          >
+            <ArrowLeft size={18} />
+            {sidebarOpen && <span className="fr-sidebar-label">Back to Home</span>}
+          </button>
+          <button 
+            className="fr-sidebar-item signout" 
+            onClick={handleSignOut} 
+            title="Sign Out"
+          >
             <LogOut size={18} />
             {sidebarOpen && <span className="fr-sidebar-label">Sign Out</span>}
           </button>
@@ -106,11 +138,30 @@ export default function DonorLayout({ setCurrentPage, setCurrentRole, foodListin
       <div className="fr-dash-main">
         <header className="fr-dash-topbar">
           <div className="fr-topbar-left">
-            <button className="fr-sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            {/* Prominent Back to Home Button */}
+            <button
+              type="button"
+              className="fr-topbar-back-btn"
+              onClick={handleBackToHome}
+              title="Return to Home Page"
+            >
+              <ArrowLeft size={16} />
+              <span>Back to Home</span>
+            </button>
+
+            <div className="fr-topbar-divider" />
+
+            <button 
+              type="button"
+              className="fr-sidebar-toggle" 
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              title="Toggle Sidebar"
+            >
               <LayoutDashboard size={18} />
             </button>
+
             <div className="fr-topbar-breadcrumb">
-              <span className="fr-breadcrumb-root">Dashboard</span>
+              <span className="fr-breadcrumb-root">Donor Portal</span>
               {activeNav !== 'dashboard' && (
                 <>
                   <ChevronRight size={14} />
@@ -119,6 +170,7 @@ export default function DonorLayout({ setCurrentPage, setCurrentRole, foodListin
               )}
             </div>
           </div>
+
           <div className="fr-topbar-right">
             <button className="fr-topbar-icon-btn" title="Notifications">
               <Bell size={18} />

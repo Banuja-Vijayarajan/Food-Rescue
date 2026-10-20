@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    DONOR DASHBOARD — Styles
    Food Rescue | donor-dashboard.css
    ============================================================ */
@@ -80,6 +80,19 @@
   font-weight: 700;
   border: 1px solid rgba(25,195,125,0.2);
 }
+.fr-sidebar-item.back-home {
+  color: var(--fr-primary);
+  font-weight: 600;
+  margin-bottom: 6px;
+  border: 1px solid rgba(25, 195, 125, 0.18);
+  background: rgba(25, 195, 125, 0.06);
+}
+.fr-sidebar-item.back-home:hover {
+  background: rgba(25, 195, 125, 0.16);
+  border-color: var(--fr-primary);
+  color: var(--fr-primary);
+}
+
 .fr-sidebar-item.signout { color: var(--fr-danger); }
 .fr-sidebar-item.signout:hover { background: rgba(239,68,68,0.08); }
 
@@ -113,6 +126,42 @@
   gap: 16px;
 }
 .fr-topbar-left { display: flex; align-items: center; gap: 12px; }
+
+/* Topbar Back Button */
+.fr-topbar-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--fr-border-card);
+  background: var(--fr-bg-subtle);
+  color: var(--fr-text-heading);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fr-topbar-back-btn:hover {
+  background: rgba(25, 195, 125, 0.12);
+  border-color: var(--fr-primary);
+  color: var(--fr-primary);
+  transform: translateX(-2px);
+}
+.fr-topbar-back-btn svg {
+  transition: transform 0.2s ease;
+}
+.fr-topbar-back-btn:hover svg {
+  transform: translateX(-3px);
+}
+
+.fr-topbar-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--fr-border-card);
+  margin: 0 2px;
+}
+
 .fr-sidebar-toggle {
   width: 36px; height: 36px;
   border-radius: 10px; border: 1px solid var(--fr-border-card);

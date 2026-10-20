@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CallAlertSimulationModal from './components/CallAlertSimulationModal';
-import EvaluationSwitcher from './components/EvaluationSwitcher';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -75,30 +74,33 @@ export default function App() {
     }));
   };
 
+  const [donorInitialNav, setDonorInitialNav] = useState('my-donations');
+  const [donorHighlightedMealId, setDonorHighlightedMealId] = useState(null);
+
+  const handleOpenDonorPage = (meal) => {
+    setDonorInitialNav('my-donations');
+    if (meal && meal.id) {
+      setDonorHighlightedMealId(meal.id);
+    }
+    setCurrentRole('donor');
+  };
+
   // If logged in as donor, show the full Donor Dashboard
   if (currentRole === 'donor') {
     return (
-      <>
-        <DonorLayout
-          setCurrentPage={setCurrentPage}
-          setCurrentRole={setCurrentRole}
-          foodListings={foodListings}
-          onMealPosted={handleMealPosted}
-        />
-        {/* Floating Role Switcher — still accessible inside dashboard */}
-        <EvaluationSwitcher
-          currentRole={currentRole}
-          setCurrentRole={setCurrentRole}
-          setCurrentPage={setCurrentPage}
-        />
-      </>
+      <DonorLayout
+        setCurrentPage={setCurrentPage}
+        setCurrentRole={setCurrentRole}
+        foodListings={foodListings}
+        onMealPosted={handleMealPosted}
+        initialNav={donorInitialNav}
+        highlightedMealId={donorHighlightedMealId}
+      />
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-300">
-      {/* Top Banner was removed as requested by user */}
-
       {/* Main Navigation */}
       <Navbar 
         currentPage={currentPage}
@@ -118,7 +120,9 @@ export default function App() {
             setCurrentPage={setCurrentPage}
             onOpenCallSim={() => setCallModalOpen(true)}
             currentRole={currentRole}
+            setCurrentRole={setCurrentRole}
             onClaimMeal={handleClaimMeal}
+            onOpenDonorPage={handleOpenDonorPage}
           />
         )}
 
@@ -141,13 +145,6 @@ export default function App() {
       <Footer 
         setCurrentPage={setCurrentPage}
         onOpenCallSim={() => setCallModalOpen(true)}
-      />
-
-      {/* Floating 1-Click Evaluation Switcher (Bottom-Left Pill) */}
-      <EvaluationSwitcher 
-        currentRole={currentRole}
-        setCurrentRole={setCurrentRole}
-        setCurrentPage={setCurrentPage}
       />
 
       {/* Interactive Call Alert Simulation Modal */}

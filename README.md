@@ -17,23 +17,23 @@ A modern, responsive web application designed to connect commercial food donors 
 
 ### 2. Food Donor Portal (Dashboard & Management)
 A dedicated, role-based workspace for hotels, restaurants, and caterers:
-- **Donor Dashboard (`/donor`)**:
+- **Donor Dashboard**:
   - Live summary statistics (Active Listings, Pending Requests, Scheduled Pickups, Completed Donations, Total Portions Shared).
   - Quick action buttons (Post Food, View Requests, Scheduled Pickups).
   - Active listings overview with live status badges.
   - Recent incoming requests preview and scheduled pickups list.
   - Environmental Impact widget (CO₂e saved and meals rescued).
-- **Post Food Surplus (`/donor/post`)**:
+- **Post Food Surplus**:
   - Clean donation creation form: Meal Title, Food Category (Rice & Curry, Bakery, Prepared meals, etc.), Quantity / Portions, Safe-Until Expiry Time, Pickup Location, Dietary Tags (Vegetarian, Halal, etc.), and Storage Instructions.
   - Instant trigger for automated recipient call alert simulation.
-- **My Donations (`/donor/donations`)**:
+- **My Donations**:
   - Manage all posted surplus listings with search and status filter pills (`All`, `Available`, `Requested`, `Accepted`, `Collected`).
   - Request counters and quick action controls (Edit, Cancel / Delete).
-- **Incoming Requests (`/donor/requests`)**:
+- **Incoming Requests**:
   - Review recipient organizations requesting surplus food.
   - Organization details (shelter name, distance, contact phone, resident count, message).
   - Instant **Accept** and **Decline** actions with real-time UI status updates.
-- **Pickup Schedule (`/donor/pickups`)**:
+- **Pickup Schedule**:
   - Track assigned drivers, scheduled pickup time slots, vehicle details, recipient organization info, and contact numbers.
 - **Collapsible Sidebar Navigation**: Fast navigation between Dashboard, Post Food, Donations, Requests, and Pickups with badge counts.
 
@@ -44,14 +44,14 @@ A dedicated, role-based workspace for hotels, restaurants, and caterers:
   - Includes a security notice stating Administrator accounts cannot be self-registered.
 - **Login Page with 1-Click Evaluation Accounts**:
   - Instant demo login buttons for fast testing:
-    - **Donor**: Green Leaf Hotel
+    - **Donor**:  Hotel
     - **Recipient**: Hope Shelter
     - **Admin**: System Supervisor
   - Security features: Password visibility toggle, Remember Me option, and Forgot Password simulation.
 
 ### 4. Interactive Simulation Tools
-- **Role Switcher**: Floating bottom-left evaluation pill allowing 1-click switching between `Visitor / Guest`, `Food Donor`, `Recipient Org`, and `System Admin`.
 - **Automated Call Alert Simulation**: Interactive simulation modal showing how automated IVR phone calls ring nearby shelters as soon as surplus food is posted.
+- **Direct Portal Navigation**: 1-click access to the Food Donor Portal via the navigation bar or hero CTA, with an integrated "Back to Home" button to return anytime.
 
 ---
 
@@ -141,9 +141,10 @@ npm run dev
 Open your browser and navigate to:
  **http://localhost:5173/** (or the port shown in your terminal).
 
-### 3. Switch to Food Donor View
-- Click the floating **Role Switcher** pill at the bottom-left corner and select **"Food Donor"**, or:
-- Click **"Sign In"** in the top navigation, click the **"Donor: Green Leaf Hotel"** quick button, and submit.
+### 3. Access Food Donor View
+- Click **"Login"** in the top navigation (or click **"Donate Surplus Food"** on the home page hero section).
+- Choose the **"Donor: Green Leaf Hotel"** demo account button and sign in.
+- **Return to Home**: Click the **"← Back to Home"** button located on the top bar or sidebar of the Donor Dashboard to return to the home page anytime.
 
 ### 4. Build for Production
 ```bash
