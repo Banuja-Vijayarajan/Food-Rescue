@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   FOOD RESCUE DESIGN SYSTEM & AESTHETICS (Separate Styles Folder)
+   ========================================================================== */
+
+:root {
+  --fr-primary: #19C37D;
+  --fr-primary-hover: #15a86a;
+  --fr-primary-glow: rgba(25, 195, 125, 0.35);
+  --fr-accent-lime: #A3E635;
+  --fr-bg-body: #F5FAF7;
+  --fr-bg-card: #FFFFFF;
+  --fr-bg-card-hover: #FCFDFD;
+  --fr-bg-glass: rgba(255, 255, 255, 0.9);
+  --fr-bg-subtle: #EBF4F0;
+  --fr-text-heading: #12352D;
+  --fr-text-body: #2B4E44;
+  --fr-text-muted: #5A7E74;
+  --fr-border-card: #DCEAE4;
+  --fr-border-focus: #19C37D;
+  --fr-shadow-card: 0 10px 30px -10px rgba(18, 53, 45, 0.08);
+  --fr-badge-bg: #E8F7F0;
+  --fr-badge-text: #0E5E42;
+  --fr-input-bg: #FFFFFF;
+  --fr-input-border: #DCEAE4;
+}
+
+[data-theme="dark"] {
+  --fr-bg-body: #0B2E26;
+  --fr-bg-card: #14463C;
+  --fr-bg-card-hover: #195347;
+  --fr-bg-glass: rgba(14, 56, 47, 0.9);
+  --fr-bg-subtle: #0e382f;
+  --fr-text-heading: #F5FAF7;
+  --fr-text-body: #E0EFEA;
+  --fr-text-muted: #A7C4BA;
+  --fr-border-card: rgba(167, 196, 186, 0.16);
+  --fr-border-focus: #19C37D;
+  --fr-shadow-card: 0 14px 36px -12px rgba(4, 18, 15, 0.6);
+  --fr-badge-bg: rgba(25, 195, 125, 0.18);
+  --fr-badge-text: #A3E635;
+  --fr-input-bg: #0e382f;
+  --fr-input-border: rgba(167, 196, 186, 0.22);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--fr-bg-body);
+  color: var(--fr-text-body);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+  color: var(--fr-text-heading);
+  letter-spacing: -0.02em;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes callRing {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-14deg); }
+  20% { transform: rotate(14deg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(10deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+.animate-call-ring {
+  animation: callRing 1.4s infinite ease-in-out;
+}

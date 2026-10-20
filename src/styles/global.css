@@ -1,0 +1,190 @@
+/* ==========================================================================
+   GLOBAL DESIGN TOKENS & THEMES
+   Food Rescue - Smart Food Surplus Redistribution System
+   ========================================================================== */
+
+:root {
+  /* Brand Tokens */
+  --fr-primary: #19C37D;
+  --fr-primary-hover: #15a86a;
+  --fr-primary-glow: rgba(25, 195, 125, 0.35);
+  --fr-accent-lime: #A3E635;
+  --fr-accent-lime-hover: #8fd425;
+  --fr-danger: #ef4444;
+  --fr-warning: #f59e0b;
+  --fr-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --fr-font-display: 'Outfit', sans-serif;
+  --fr-radius-sm: 8px;
+  --fr-radius-md: 14px;
+  --fr-radius-lg: 20px;
+  --fr-radius-full: 9999px;
+  --fr-transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light Theme Variables */
+[data-theme="light"] {
+  --fr-bg-body: #F5FAF7;
+  --fr-bg-card: #FFFFFF;
+  --fr-bg-card-hover: #FCFDFD;
+  --fr-bg-glass: rgba(255, 255, 255, 0.88);
+  --fr-bg-subtle: #EBF4F0;
+  --fr-bg-tag: #E4F3ED;
+  --fr-text-heading: #12352D;
+  --fr-text-body: #2B4E44;
+  --fr-text-muted: #5A7E74;
+  --fr-border-card: #DCEAE4;
+  --fr-border-focus: #19C37D;
+  --fr-shadow-card: 0 10px 30px -10px rgba(18, 53, 45, 0.08);
+  --fr-shadow-glow: 0 8px 24px -4px rgba(25, 195, 125, 0.25);
+  --fr-badge-bg: #E8F7F0;
+  --fr-badge-text: #0E5E42;
+  --fr-input-bg: #FFFFFF;
+  --fr-input-border: #DCEAE4;
+}
+
+/* Dark Theme Variables (Using #0A1C12 as primary dark bg, #0D1F16 as card bg) */
+[data-theme="dark"] {
+  --fr-bg-body: #0A1C12;
+  --fr-bg-card: #0D1F16;
+  --fr-bg-card-hover: #132B20;
+  --fr-bg-glass: rgba(10, 28, 18, 0.9);
+  --fr-bg-subtle: #08170F;
+  --fr-bg-tag: #143023;
+  --fr-text-heading: #F5FAF7;
+  --fr-text-body: #E0EFEA;
+  --fr-text-muted: #A7C4BA;
+  --fr-border-card: rgba(167, 196, 186, 0.14);
+  --fr-border-focus: #19C37D;
+  --fr-shadow-card: 0 14px 36px -12px rgba(2, 8, 5, 0.7);
+  --fr-shadow-glow: 0 10px 32px -6px rgba(25, 195, 125, 0.45);
+  --fr-badge-bg: rgba(25, 195, 125, 0.16);
+  --fr-badge-text: #A3E635;
+  --fr-input-bg: #07150E;
+  --fr-input-border: rgba(167, 196, 186, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fr-font-sans);
+  background-color: var(--fr-bg-body);
+  color: var(--fr-text-body);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fr-font-display);
+  color: var(--fr-text-heading);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+.fr-container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Reusable Button Styles */
+.fr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 10px 22px;
+  border-radius: var(--fr-radius-full);
+  cursor: pointer;
+  transition: var(--fr-transition);
+  border: none;
+  outline: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.fr-btn-primary {
+  background: linear-gradient(135deg, #19C37D 0%, #11975e 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px var(--fr-primary-glow);
+}
+
+.fr-btn-primary:hover {
+  background: linear-gradient(135deg, #1bd689 0%, #14a86a 100%);
+  box-shadow: 0 6px 22px rgba(25, 195, 125, 0.5);
+  transform: translateY(-2px);
+}
+
+.fr-btn-accent {
+  background: linear-gradient(135deg, #A3E635 0%, #86c421 100%);
+  color: #0A1C12;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(163, 230, 53, 0.35);
+}
+
+.fr-btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(163, 230, 53, 0.5);
+}
+
+.fr-btn-secondary {
+  background: var(--fr-bg-subtle);
+  color: var(--fr-text-heading);
+  border: 1px solid var(--fr-border-card);
+}
+
+.fr-btn-secondary:hover {
+  background: var(--fr-bg-card-hover);
+  border-color: var(--fr-primary);
+  color: var(--fr-primary);
+  transform: translateY(-2px);
+}
+
+.fr-btn-ghost {
+  background: transparent;
+  color: var(--fr-text-heading);
+  border: none;
+}
+
+.fr-btn-ghost:hover {
+  color: var(--fr-primary);
+  background: var(--fr-bg-subtle);
+}
+
+@keyframes fr-pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+
+@keyframes fr-ring {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-15deg); }
+  20% { transform: rotate(15deg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(10deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes fr-fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
