@@ -6,6 +6,7 @@ import EvaluationSwitcher from './components/EvaluationSwitcher';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import DonorLayout from './pages/donor/DonorLayout';
 import { INITIAL_FOOD_POSTINGS } from './data/mockData';
 
 export default function App() {
@@ -73,6 +74,26 @@ export default function App() {
       return m;
     }));
   };
+
+  // If logged in as donor, show the full Donor Dashboard
+  if (currentRole === 'donor') {
+    return (
+      <>
+        <DonorLayout
+          setCurrentPage={setCurrentPage}
+          setCurrentRole={setCurrentRole}
+          foodListings={foodListings}
+          onMealPosted={handleMealPosted}
+        />
+        {/* Floating Role Switcher — still accessible inside dashboard */}
+        <EvaluationSwitcher
+          currentRole={currentRole}
+          setCurrentRole={setCurrentRole}
+          setCurrentPage={setCurrentPage}
+        />
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-300">
