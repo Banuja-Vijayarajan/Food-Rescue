@@ -48,11 +48,24 @@ export default function LoginPage({ setCurrentPage, setCurrentRole }) {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    setSuccessMessage(`Authenticated successfully as ${selectedRole}!`);
-    if (setCurrentRole) setCurrentRole(selectedRole);
+    let roleToSet = selectedRole;
+    const lowerEmail = (email || '').toLowerCase();
+    if (lowerEmail.includes('donor') || lowerEmail.includes('greenleaf')) {
+      roleToSet = 'donor';
+    } else if (lowerEmail.includes('shelter') || lowerEmail.includes('recipient') || lowerEmail.includes('child')) {
+      roleToSet = 'recipient';
+    } else if (lowerEmail.includes('admin') || lowerEmail.includes('supervisor')) {
+      roleToSet = 'admin';
+    }
+
+    setSuccessMessage(`Authenticated as ${roleToSet.toUpperCase()}! Redirecting to ${roleToSet === 'donor' ? 'Donor Portal' : 'Dashboard'}...`);
+    
     setTimeout(() => {
-      setCurrentPage('home');
-    }, 1000);
+      if (setCurrentRole) setCurrentRole(roleToSet);
+      if (roleToSet !== 'donor') {
+        setCurrentPage('home');
+      }
+    }, 400);
   };
 
   return (

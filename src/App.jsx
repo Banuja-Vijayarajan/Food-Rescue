@@ -74,7 +74,7 @@ export default function App() {
     }));
   };
 
-  const [donorInitialNav, setDonorInitialNav] = useState('my-donations');
+  const [donorInitialNav, setDonorInitialNav] = useState('dashboard');
   const [donorHighlightedMealId, setDonorHighlightedMealId] = useState(null);
 
   const handleOpenDonorPage = (meal) => {

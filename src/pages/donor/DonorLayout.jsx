@@ -9,6 +9,7 @@ import DonorDonationsPage from './DonorDonationsPage';
 import DonorRequestsPage from './DonorRequestsPage';
 import DonorPickupPage from './DonorPickupPage';
 import PostFoodPage from './PostFoodPage';
+import DonorProfilePage from './DonorProfilePage';
 import '../../styles/donor-dashboard.css';
 
 const NAV_ITEMS = [
@@ -19,7 +20,7 @@ const NAV_ITEMS = [
   { id: 'pickup',        label: 'Pickup Schedule',      icon: CalendarClock },
   { id: 'history',       label: 'Donation History',     icon: History },
   { id: 'notifications', label: 'Notifications',        icon: Bell },
-  { id: 'profile',       label: 'Organization Profile', icon: User },
+  { id: 'profile',       label: 'Donor Profile',        icon: User },
   { id: 'settings',      label: 'Settings',             icon: Settings },
 ];
 
@@ -28,10 +29,10 @@ export default function DonorLayout({
   setCurrentRole, 
   foodListings, 
   onMealPosted,
-  initialNav = 'my-donations',
+  initialNav = 'dashboard',
   highlightedMealId = null
 }) {
-  const [activeNav, setActiveNav] = useState(initialNav || 'my-donations');
+  const [activeNav, setActiveNav] = useState(initialNav || 'dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Return to Home Page
@@ -58,6 +59,7 @@ export default function DonorLayout({
       );
       case 'requests':     return <DonorRequestsPage />;
       case 'pickup':       return <DonorPickupPage />;
+      case 'profile':      return <DonorProfilePage />;
       default:
         return (
           <div className="fr-dash-view">
@@ -79,7 +81,12 @@ export default function DonorLayout({
     <div className="fr-donor-layout">
       {/* Sidebar */}
       <aside className={`fr-sidebar ${sidebarOpen ? 'open' : 'collapsed'}`}>
-        <div className="fr-sidebar-profile">
+        <div 
+          className="fr-sidebar-profile" 
+          onClick={() => setActiveNav('profile')}
+          style={{ cursor: 'pointer' }}
+          title="View Donor Profile"
+        >
           <div className="fr-sidebar-avatar">GL</div>
           {sidebarOpen && (
             <div className="fr-sidebar-profile-info">
@@ -182,7 +189,12 @@ export default function DonorLayout({
             >
               <PlusCircle size={15} /> Post Surplus
             </button>
-            <div className="fr-topbar-profile">
+            <div 
+              className="fr-topbar-profile"
+              onClick={() => setActiveNav('profile')}
+              style={{ cursor: 'pointer' }}
+              title="View Donor Profile"
+            >
               <div className="fr-topbar-avatar">GL</div>
               <div className="fr-topbar-info">
                 <div className="fr-topbar-name">Green Leaf Hotel</div>
