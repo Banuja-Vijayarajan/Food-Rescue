@@ -10,6 +10,7 @@ import DonorRequestsPage from './DonorRequestsPage';
 import DonorPickupPage from './DonorPickupPage';
 import PostFoodPage from './PostFoodPage';
 import DonorProfilePage from './DonorProfilePage';
+import DonorHistoryPage from './DonorHistoryPage';
 import '../../styles/donor-dashboard.css';
 
 const NAV_ITEMS = [
@@ -59,6 +60,7 @@ export default function DonorLayout({
       );
       case 'requests':     return <DonorRequestsPage />;
       case 'pickup':       return <DonorPickupPage />;
+      case 'history':      return <DonorHistoryPage />;
       case 'profile':      return <DonorProfilePage />;
       default:
         return (
