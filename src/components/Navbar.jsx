@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/navbar.css';
-import { Sun, Moon, Utensils, LogIn, UserPlus, LogOut, PlusCircle } from 'lucide-react';
+import { Sun, Moon, Utensils, LogIn, UserPlus, LogOut, PlusCircle, HeartHandshake } from 'lucide-react';
 
 export default function Navbar({ 
   currentPage, 
@@ -148,6 +148,17 @@ export default function Navbar({
                   Organisations
                 </button>
               </li>
+              <li>
+                <button
+                  type="button"
+                  className={`fr-nav-link ${currentRole === 'recipient' ? 'active' : ''}`}
+                  style={{ color: 'var(--fr-primary)', fontWeight: 700 }}
+                  onClick={() => setCurrentRole('recipient')}
+                  title="Open Recipient Welfare Organization Portal"
+                >
+                  Recipient Portal
+                </button>
+              </li>
             </ul>
           </nav>
 
@@ -185,6 +196,16 @@ export default function Navbar({
                     style={{ padding: '8px 16px', fontSize: '0.82rem' }}
                   >
                     <PlusCircle size={15} /> Post Surplus
+                  </button>
+                )}
+                {currentRole === 'recipient' && (
+                  <button 
+                    type="button"
+                    className="fr-btn fr-btn-primary"
+                    onClick={() => setCurrentRole('recipient')}
+                    style={{ padding: '8px 16px', fontSize: '0.82rem' }}
+                  >
+                    <Utensils size={15} /> Recipient Portal
                   </button>
                 )}
                 <button 

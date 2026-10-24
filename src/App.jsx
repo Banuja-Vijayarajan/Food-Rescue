@@ -7,6 +7,8 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import OrganizationPage from './pages/OrganizationPage';
 import DonorLayout from './pages/donor/DonorLayout';
+import RecipientLayout from './pages/recipient/RecipientLayout';
+import EvaluationSwitcher from './components/EvaluationSwitcher';
 import { INITIAL_FOOD_POSTINGS } from './data/mockData';
 
 export default function App() {
@@ -15,7 +17,7 @@ export default function App() {
     return localStorage.getItem('foodrescue-theme') || 'dark';
   });
 
-  // Navigation state: 'home' | 'login' | 'register'
+  // Navigation state: 'home' | 'login' | 'register' | 'organizations'
   const [currentPage, setCurrentPage] = useState('home');
 
   // Evaluation Role state: 'visitor' | 'donor' | 'recipient' | 'admin'
@@ -100,6 +102,18 @@ export default function App() {
     );
   }
 
+  // If logged in as recipient, show the full Recipient Organization Portal
+  if (currentRole === 'recipient') {
+    return (
+      <RecipientLayout
+        setCurrentPage={setCurrentPage}
+        setCurrentRole={setCurrentRole}
+        foodListings={foodListings}
+        onClaimMeal={handleClaimMeal}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-300">
       {/* Main Navigation */}
@@ -159,6 +173,13 @@ export default function App() {
         isOpen={callModalOpen}
         onClose={() => setCallModalOpen(false)}
         onMealPosted={handleMealPosted}
+      />
+
+      {/* Floating Role Switcher for instant testing */}
+      <EvaluationSwitcher
+        currentRole={currentRole}
+        setCurrentRole={setCurrentRole}
+        setCurrentPage={setCurrentPage}
       />
     </div>
   );
