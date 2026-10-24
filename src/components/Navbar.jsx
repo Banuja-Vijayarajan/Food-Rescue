@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/navbar.css';
-import { Sun, Moon, Utensils, LogIn, UserPlus, LogOut, PlusCircle, HeartHandshake } from 'lucide-react';
+import { Sun, Moon, Utensils, LogIn, UserPlus, LogOut, PlusCircle, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export default function Navbar({ 
   currentPage, 
@@ -159,6 +159,17 @@ export default function Navbar({
                   Recipient Portal
                 </button>
               </li>
+              <li>
+                <button
+                  type="button"
+                  className={`fr-nav-link ${currentRole === 'admin' ? 'active' : ''}`}
+                  style={{ color: '#10b981', fontWeight: 700 }}
+                  onClick={() => setCurrentRole('admin')}
+                  title="Open Admin Operations Central Portal"
+                >
+                  Admin Portal
+                </button>
+              </li>
             </ul>
           </nav>
 
@@ -206,6 +217,16 @@ export default function Navbar({
                     style={{ padding: '8px 16px', fontSize: '0.82rem' }}
                   >
                     <Utensils size={15} /> Recipient Portal
+                  </button>
+                )}
+                {currentRole === 'admin' && (
+                  <button 
+                    type="button"
+                    className="fr-btn fr-btn-primary"
+                    onClick={() => setCurrentRole('admin')}
+                    style={{ padding: '8px 16px', fontSize: '0.82rem' }}
+                  >
+                    <ShieldCheck size={15} /> Admin Console
                   </button>
                 )}
                 <button 

@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import OrganizationPage from './pages/OrganizationPage';
 import DonorLayout from './pages/donor/DonorLayout';
 import RecipientLayout from './pages/recipient/RecipientLayout';
+import AdminLayout from './pages/admin/AdminLayout';
 import EvaluationSwitcher from './components/EvaluationSwitcher';
 import { INITIAL_FOOD_POSTINGS } from './data/mockData';
 
@@ -110,6 +111,18 @@ export default function App() {
         setCurrentRole={setCurrentRole}
         foodListings={foodListings}
         onClaimMeal={handleClaimMeal}
+      />
+    );
+  }
+
+  // If logged in as admin, show the full Admin Operations Central Portal
+  if (currentRole === 'admin') {
+    return (
+      <AdminLayout
+        setCurrentPage={setCurrentPage}
+        setCurrentRole={setCurrentRole}
+        foodListings={foodListings}
+        setFoodListings={setFoodListings}
       />
     );
   }

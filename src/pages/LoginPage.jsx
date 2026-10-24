@@ -58,11 +58,11 @@ export default function LoginPage({ setCurrentPage, setCurrentRole }) {
       roleToSet = 'admin';
     }
 
-    setSuccessMessage(`Authenticated as ${roleToSet.toUpperCase()}! Redirecting to ${roleToSet === 'donor' ? 'Donor Portal' : 'Dashboard'}...`);
+    setSuccessMessage(`Authenticated as ${roleToSet.toUpperCase()}! Redirecting to ${roleToSet === 'donor' ? 'Donor Portal' : roleToSet === 'admin' ? 'Admin Central Operations Desk' : 'Recipient Dashboard'}...`);
     
     setTimeout(() => {
       if (setCurrentRole) setCurrentRole(roleToSet);
-      if (roleToSet !== 'donor') {
+      if (roleToSet !== 'donor' && roleToSet !== 'admin') {
         setCurrentPage('home');
       }
     }, 400);
