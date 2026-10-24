@@ -5,6 +5,7 @@ import CallAlertSimulationModal from './components/CallAlertSimulationModal';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import OrganizationPage from './pages/OrganizationPage';
 import DonorLayout from './pages/donor/DonorLayout';
 import { INITIAL_FOOD_POSTINGS } from './data/mockData';
 
@@ -137,6 +138,12 @@ export default function App() {
           <RegisterPage 
             setCurrentPage={setCurrentPage}
             setCurrentRole={setCurrentRole}
+          />
+        )}
+
+        {currentPage === 'organizations' && (
+          <OrganizationPage
+            setCurrentPage={setCurrentPage}
           />
         )}
       </div>

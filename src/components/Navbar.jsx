@@ -139,6 +139,15 @@ export default function Navbar({
                   About
                 </button>
               </li>
+              <li>
+                <button
+                  type="button"
+                  className={`fr-nav-link ${currentPage === 'organizations' ? 'active' : ''}`}
+                  onClick={() => setCurrentPage('organizations')}
+                >
+                  Organisations
+                </button>
+              </li>
             </ul>
           </nav>
 
