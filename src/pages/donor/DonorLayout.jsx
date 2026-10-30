@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
-  ArrowLeft, PlusCircle, ListOrdered, Inbox, CalendarClock,
-  History, Bell, User, Settings, LogOut,
+  PlusCircle, ListOrdered, Inbox, CalendarClock,
+  History, User, LogOut,
   LayoutDashboard, ShieldCheck, ChevronDown, ChevronRight
 } from 'lucide-react';
 import DonorDashboardPage from './DonorDashboardPage';
@@ -20,9 +20,7 @@ const NAV_ITEMS = [
   { id: 'requests',      label: 'Incoming Requests',    icon: Inbox, badge: 2 },
   { id: 'pickup',        label: 'Pickup Schedule',      icon: CalendarClock },
   { id: 'history',       label: 'Donation History',     icon: History },
-  { id: 'notifications', label: 'Notifications',        icon: Bell },
   { id: 'profile',       label: 'Donor Profile',        icon: User },
-  { id: 'settings',      label: 'Settings',             icon: Settings },
 ];
 
 export default function DonorLayout({ 
@@ -35,12 +33,6 @@ export default function DonorLayout({
 }) {
   const [activeNav, setActiveNav] = useState(initialNav || 'dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  // Return to Home Page
-  const handleBackToHome = () => {
-    if (setCurrentRole) setCurrentRole('visitor');
-    if (setCurrentPage) setCurrentPage('home');
-  };
 
   const handleSignOut = () => {
     if (setCurrentRole) setCurrentRole('visitor');
@@ -61,12 +53,12 @@ export default function DonorLayout({
       case 'requests':     return <DonorRequestsPage />;
       case 'pickup':       return <DonorPickupPage />;
       case 'history':      return <DonorHistoryPage />;
-      case 'profile':      return <DonorProfilePage />;
+      case 'profile':      return <DonorProfilePage onDeactivateAccount={handleSignOut} />;
       default:
         return (
           <div className="fr-dash-view">
             <div className="fr-section-card" style={{ padding: '60px', textAlign: 'center' }}>
-              <Bell size={40} color="var(--fr-primary)" />
+              <User size={40} color="var(--fr-primary)" />
               <h2 style={{ marginTop: '16px', color: 'var(--fr-text-heading)' }}>
                 {NAV_ITEMS.find(n => n.id === activeNav)?.label}
               </h2>
@@ -123,15 +115,6 @@ export default function DonorLayout({
         </nav>
 
         <div className="fr-sidebar-footer">
-          {/* Back to Home Button in Sidebar */}
-          <button 
-            className="fr-sidebar-item back-home" 
-            onClick={handleBackToHome} 
-            title="Back to Home Page"
-          >
-            <ArrowLeft size={18} />
-            {sidebarOpen && <span className="fr-sidebar-label">Back to Home</span>}
-          </button>
           <button 
             className="fr-sidebar-item signout" 
             onClick={handleSignOut} 
@@ -147,19 +130,6 @@ export default function DonorLayout({
       <div className="fr-dash-main">
         <header className="fr-dash-topbar">
           <div className="fr-topbar-left">
-            {/* Prominent Back to Home Button */}
-            <button
-              type="button"
-              className="fr-topbar-back-btn"
-              onClick={handleBackToHome}
-              title="Return to Home Page"
-            >
-              <ArrowLeft size={16} />
-              <span>Back to Home</span>
-            </button>
-
-            <div className="fr-topbar-divider" />
-
             <button 
               type="button"
               className="fr-sidebar-toggle" 
@@ -181,10 +151,6 @@ export default function DonorLayout({
           </div>
 
           <div className="fr-topbar-right">
-            <button className="fr-topbar-icon-btn" title="Notifications">
-              <Bell size={18} />
-              <span className="fr-topbar-notif-dot" />
-            </button>
             <button
               className="fr-btn fr-btn-primary fr-btn-sm"
               onClick={() => setActiveNav('post-food')}

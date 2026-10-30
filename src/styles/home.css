@@ -261,6 +261,27 @@
   margin: 0 auto 50px auto;
 }
 
+.fr-section .fr-how-it-works-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 50px !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+.fr-how-it-works-header .fr-hero-pill-badge,
+.fr-how-it-works-header .fr-section-title,
+.fr-how-it-works-header .fr-section-subtitle {
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 .fr-section .fr-section-title {
   font-size: 2.3rem;
   font-weight: 800;
@@ -347,7 +368,115 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
-  margin-top: 40px;
+  max-width: 1120px;
+  margin: 40px auto 0;
+}
+
+/* Registration access notice */
+.fr-registration-notice-modal {
+  position: relative;
+  width: min(520px, calc(100vw - 32px));
+  padding: 30px;
+  border: 1px solid rgba(25, 195, 125, 0.35);
+  border-radius: 22px;
+  background: var(--fr-bg-card);
+  color: var(--fr-text-body);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+.fr-registration-notice-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fr-text-muted);
+  cursor: pointer;
+}
+
+.fr-registration-notice-close:hover {
+  background: var(--fr-bg-subtle);
+  color: var(--fr-text-heading);
+}
+
+.fr-registration-notice-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 30px;
+}
+
+.fr-registration-notice-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(25, 195, 125, 0.14);
+  color: var(--fr-primary);
+}
+
+.fr-registration-notice-heading span {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--fr-primary);
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fr-registration-notice-heading h2 {
+  color: var(--fr-text-heading);
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.fr-registration-notice-copy {
+  margin: 22px 0 16px;
+  color: var(--fr-text-muted);
+  line-height: 1.6;
+}
+
+.fr-registration-notice-points {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 18px;
+  border: 1px solid var(--fr-border-card);
+  border-radius: 14px;
+  background: var(--fr-bg-subtle);
+  list-style: none;
+}
+
+.fr-registration-notice-points li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fr-text-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.fr-registration-notice-points svg {
+  flex: 0 0 auto;
+  color: var(--fr-primary);
+}
+
+.fr-registration-notice-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.fr-registration-notice-actions .fr-btn {
+  flex: 1;
+  justify-content: center;
 }
 
 .fr-workflow-card {
@@ -359,6 +488,8 @@
   flex-direction: column;
   box-shadow: var(--fr-shadow-card);
   transition: var(--fr-transition);
+  align-items: center;
+  text-align: center;
 }
 
 .fr-workflow-card:hover {
@@ -372,6 +503,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+  width: 100%;
 }
 
 .fr-workflow-step-num {
@@ -415,6 +547,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  justify-content: center;
 }
 
 /* Browse Available Food Feed */
@@ -688,6 +821,30 @@
   padding: 24px;
 }
 
+.fr-meal-ingredients {
+  margin-bottom: 18px;
+  padding: 13px 15px;
+  border: 1px solid var(--fr-border-card);
+  border-radius: 11px;
+  background: var(--fr-bg-subtle);
+}
+
+.fr-meal-ingredients span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--fr-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fr-meal-ingredients p {
+  color: var(--fr-text-heading);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
 .fr-meal-modal-close-btn {
   position: absolute;
   top: 14px;
@@ -724,4 +881,6 @@
   .fr-workflow-grid { grid-template-columns: 1fr; }
   .fr-food-grid { grid-template-columns: 1fr; }
   .fr-hero-title { font-size: 2.2rem; }
+  .fr-registration-notice-modal { padding: 24px 20px; }
+  .fr-registration-notice-actions { flex-direction: column; }
 }

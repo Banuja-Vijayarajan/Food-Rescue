@@ -14,17 +14,48 @@
 }
 
 .fr-navbar-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) auto minmax(230px, 1fr);
   align-items: center;
-  justify-content: space-between;
-  height: 74px;
+  column-gap: 28px;
+  height: 72px;
 }
 
 .fr-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   cursor: pointer;
+  justify-self: start;
+  height: 52px;
+}
+
+.fr-brand-mark {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  border: 1px solid rgba(25, 195, 125, 0.28);
+  border-radius: 14px;
+  background: #eef6e6;
+  box-shadow: 0 3px 12px rgba(25, 195, 125, 0.18);
+}
+
+.fr-brand-mark img {
+  position: absolute;
+  top: -18px;
+  left: -51px;
+  width: 150px;
+  max-width: none;
+  height: auto;
+}
+
+.fr-brand-wordmark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 132px;
 }
 
 .fr-brand-logo-icon {
@@ -45,12 +76,14 @@
 }
 
 .fr-brand-title {
-  font-size: 1.25rem;
+  font-size: 1.12rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   gap: 6px;
   color: var(--fr-text-heading);
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
 .fr-brand-pulse-dot {
@@ -64,9 +97,14 @@
 }
 
 .fr-brand-subtitle {
-  font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--fr-text-muted);
+  margin-top: 5px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--fr-accent-lime);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .fr-nav-menu {
@@ -74,6 +112,10 @@
   align-items: center;
   gap: 28px;
   list-style: none;
+}
+
+.fr-navbar nav {
+  justify-self: center;
 }
 
 .fr-nav-link {
@@ -107,6 +149,7 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  justify-self: end;
 }
 
 .fr-theme-toggle {
@@ -129,8 +172,30 @@
   color: var(--fr-primary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
+  .fr-navbar-inner {
+    grid-template-columns: auto 1fr auto;
+    column-gap: 18px;
+  }
+
   .fr-nav-menu {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .fr-nav-menu {
+    display: none;
+  }
+
+  .fr-navbar-inner {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .fr-brand-wordmark {
     display: none;
   }
 }

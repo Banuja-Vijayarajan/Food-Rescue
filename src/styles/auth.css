@@ -36,6 +36,14 @@
   margin-bottom: 20px;
 }
 
+.fr-auth-brand-logo {
+  display: block;
+  width: 126px;
+  height: auto;
+  margin: 0 auto 16px;
+  object-fit: contain;
+}
+
 .fr-login-top-icon {
   width: 58px;
   height: 58px;
@@ -465,27 +473,67 @@
   background: var(--fr-bg-card);
   border: 1px solid var(--fr-border-card);
   border-radius: 20px;
-  padding: 36px 36px 40px 36px;
+  padding: 32px 36px 40px;
   box-shadow: var(--fr-shadow-card);
   transition: var(--fr-transition);
 }
 
 .fr-register-top-header {
-  margin-bottom: 26px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.fr-register-brand-mark {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(25, 195, 125, 0.4);
+  border-radius: 20px;
+  background: #eef6e6;
+  box-shadow: 0 8px 24px rgba(25, 195, 125, 0.22);
+}
+
+.fr-register-brand-mark img {
+  position: absolute;
+  top: -27px;
+  left: -77px;
+  width: 225px;
+  max-width: none;
+  height: auto;
 }
 
 .fr-register-main-heading {
   font-size: 1.85rem;
   font-weight: 800;
   color: var(--fr-text-heading);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   letter-spacing: -0.02em;
+}
+
+.fr-register-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(163, 230, 53, 0.13);
+  color: var(--fr-accent-lime);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .fr-register-sub-heading {
   font-size: 0.88rem;
   color: var(--fr-text-muted);
+  line-height: 1.6;
 }
 
 .fr-register-success-alert {

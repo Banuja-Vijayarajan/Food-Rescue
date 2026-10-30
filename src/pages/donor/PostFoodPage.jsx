@@ -1,9 +1,28 @@
 import React, { useState } from 'react';
-import { PlusCircle, Bell } from 'lucide-react';
+import { PlusCircle, Bell, Upload, Image as ImageIcon, CheckCircle2, X } from 'lucide-react';
 
 const CATEGORIES = [
   'Prepared meals', 'Rice & Curry', 'Bakery items',
   'Fruits', 'Vegetables', 'Bread & Roti', 'Beverages', 'Other'
+];
+
+const DEFAULT_FOOD_IMAGES = [
+  {
+    label: 'Rice & Curry',
+    url: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    label: 'Biryani',
+    url: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    label: 'Bakery',
+    url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    label: 'Fresh Produce',
+    url: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?auto=format&fit=crop&w=800&q=80'
+  }
 ];
 
 export default function PostFoodPage({ onNavigate, onMealPosted }) {
@@ -13,11 +32,37 @@ export default function PostFoodPage({ onNavigate, onMealPosted }) {
     quantity: '',
     unit: 'portions',
     description: '',
+    ingredients: '',
     safeUntil: '',
     packaging: '',
     location: 'Vavuniya Town',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(DEFAULT_FOOD_IMAGES[0].url);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [imageError, setImageError] = useState('');
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setImageError('Please select a valid image file.');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setImageError('Image size must be less than 5 MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUploadedImage(reader.result);
+      setImageError('');
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,6 +73,8 @@ export default function PostFoodPage({ onNavigate, onMealPosted }) {
         portions: form.quantity + ' ' + form.unit,
         donorName: 'Green Leaf Hotel & Banquets',
         recipient: 'Auto IVR',
+        image: uploadedImage || selectedImage,
+        ingredients: form.ingredients,
       });
     }
     setSubmitted(true);
@@ -35,8 +82,11 @@ export default function PostFoodPage({ onNavigate, onMealPosted }) {
       setSubmitted(false);
       setForm({
         title: '', category: 'Prepared meals', quantity: '',
-        unit: 'portions', description: '', safeUntil: '', packaging: '', location: 'Vavuniya Town'
+        unit: 'portions', description: '', ingredients: '', safeUntil: '', packaging: '', location: 'Vavuniya Town'
       });
+      setSelectedImage(DEFAULT_FOOD_IMAGES[0].url);
+      setUploadedImage(null);
+      setImageError('');
       onNavigate('my-donations');
     }, 2200);
   };
@@ -127,6 +177,19 @@ export default function PostFoodPage({ onNavigate, onMealPosted }) {
               />
             </div>
 
+            <div className="fr-form-group">
+              <label>Ingredients</label>
+              <textarea
+                placeholder="e.g. Rice, dhal, carrot, beans, coconut milk, curry spices..."
+                rows="3"
+                value={form.ingredients}
+                onChange={e => setForm({ ...form, ingredients: e.target.value })}
+              />
+              <small style={{ color: 'var(--fr-text-muted)', fontSize: '0.75rem', marginTop: '5px' }}>
+                Separate ingredients with commas and include any common allergens.
+              </small>
+            </div>
+
             <div className="fr-form-row">
               <div className="fr-form-group">
                 <label>Packaging / Storage</label>
@@ -144,6 +207,65 @@ export default function PostFoodPage({ onNavigate, onMealPosted }) {
                   value={form.location}
                   onChange={e => setForm({ ...form, location: e.target.value })}
                 />
+              </div>
+            </div>
+
+            <div className="fr-food-image-section">
+              <div className="fr-food-image-section-header">
+                <div>
+                  <label>Food Photo</label>
+                  <p>Upload your own photo or select one of the default photos.</p>
+                </div>
+                <span>Optional</span>
+              </div>
+
+              <div className="fr-food-image-preview">
+                <img src={uploadedImage || selectedImage} alt="Selected food preview" />
+                <div>
+                  <ImageIcon size={18} />
+                  <span>{uploadedImage ? 'Uploaded photo selected' : 'Default photo selected'}</span>
+                </div>
+              </div>
+
+              <div className="fr-food-image-upload-row">
+                <label className="fr-food-image-upload-btn">
+                  <Upload size={16} /> Upload Food Photo
+                  <input type="file" accept="image/*" onChange={handleImageUpload} />
+                </label>
+                {uploadedImage && (
+                  <button
+                    type="button"
+                    className="fr-food-image-remove-btn"
+                    onClick={() => setUploadedImage(null)}
+                  >
+                    <X size={15} /> Remove Upload
+                  </button>
+                )}
+                <small>JPG, PNG or WEBP • Maximum 5 MB</small>
+              </div>
+
+              {imageError && <div className="fr-food-image-error">{imageError}</div>}
+
+              <div className="fr-food-image-presets">
+                {DEFAULT_FOOD_IMAGES.map((image) => {
+                  const isSelected = !uploadedImage && selectedImage === image.url;
+                  return (
+                    <button
+                      type="button"
+                      key={image.url}
+                      className={`fr-food-image-preset ${isSelected ? 'selected' : ''}`}
+                      onClick={() => {
+                        setUploadedImage(null);
+                        setSelectedImage(image.url);
+                        setImageError('');
+                      }}
+                    >
+                      <img src={image.url} alt={image.label} />
+                      <span>{image.label}</span>
+                      {isSelected && <CheckCircle2 size={18} />}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 

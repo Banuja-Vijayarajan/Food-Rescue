@@ -58,11 +58,11 @@ export default function LoginPage({ setCurrentPage, setCurrentRole }) {
       roleToSet = 'admin';
     }
 
-    setSuccessMessage(`Authenticated as ${roleToSet.toUpperCase()}! Redirecting to ${roleToSet === 'donor' ? 'Donor Portal' : 'Dashboard'}...`);
+    setSuccessMessage(`Authenticated as ${roleToSet.toUpperCase()}! Redirecting to ${roleToSet === 'donor' ? 'Donor Portal' : roleToSet === 'admin' ? 'Admin Central Operations Desk' : 'Recipient Dashboard'}...`);
     
     setTimeout(() => {
       if (setCurrentRole) setCurrentRole(roleToSet);
-      if (roleToSet !== 'donor') {
+      if (roleToSet !== 'donor' && roleToSet !== 'admin') {
         setCurrentPage('home');
       }
     }, 400);
@@ -71,12 +71,11 @@ export default function LoginPage({ setCurrentPage, setCurrentRole }) {
   return (
     <div className="fr-auth-page-wrap">
       <div className="fr-login-card">
-        {/* Top Center Green Icon */}
-        <div className="fr-login-top-icon-wrap">
-          <div className="fr-login-top-icon">
-            <LogIn size={26} strokeWidth={2.4} />
-          </div>
-        </div>
+        <img
+          src="/food-rescue-logo.png"
+          alt="Food Rescue — Every Meal Counts"
+          className="fr-auth-brand-logo"
+        />
 
         {/* Heading & Subtitle */}
         <h1 className="fr-login-heading">Sign In to Food Rescue</h1>

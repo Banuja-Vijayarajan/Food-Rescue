@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/navbar.css';
-import { Sun, Moon, Utensils, LogIn, UserPlus, LogOut, PlusCircle } from 'lucide-react';
+import { Sun, Moon, Utensils, LogIn, UserPlus, LogOut, PlusCircle, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export default function Navbar({ 
   currentPage, 
@@ -80,14 +80,14 @@ export default function Navbar({
         <div className="fr-navbar-inner">
           {/* Brand Logo */}
           <div className="fr-brand" onClick={() => handleNavClick('home')}>
-            <div className="fr-brand-logo-icon">
-              <Utensils size={22} strokeWidth={2.4} />
+            <div className="fr-brand-mark" aria-hidden="true">
+              <img src="/food-rescue-logo.png" alt="" />
             </div>
-            <div className="fr-brand-titles">
+            <div className="fr-brand-wordmark">
               <span className="fr-brand-title">
-                Food Rescue <span className="fr-brand-pulse-dot" title="Live System Online"></span>
+                Food Rescue <span className="fr-brand-pulse-dot" title="Live System Online" />
               </span>
-              <span className="fr-brand-subtitle">Smart Surplus Redistribution</span>
+              <span className="fr-brand-subtitle">Every Meal Counts</span>
             </div>
           </div>
 
@@ -169,13 +169,33 @@ export default function Navbar({
                   {getRoleDisplayName()}
                 </span>
                 {currentRole === 'donor' && (
-                  <button 
+                  <button
                     type="button"
                     className="fr-btn fr-btn-accent"
                     onClick={onOpenCallSim}
                     style={{ padding: '8px 16px', fontSize: '0.82rem' }}
                   >
                     <PlusCircle size={15} /> Post Surplus
+                  </button>
+                )}
+                {currentRole === 'recipient' && (
+                  <button
+                    type="button"
+                    className="fr-btn fr-btn-primary"
+                    onClick={() => setCurrentRole('recipient')}
+                    style={{ padding: '8px 16px', fontSize: '0.82rem' }}
+                  >
+                    <Utensils size={15} /> Recipient Portal
+                  </button>
+                )}
+                {currentRole === 'admin' && (
+                  <button 
+                    type="button"
+                    className="fr-btn fr-btn-primary"
+                    onClick={() => setCurrentRole('admin')}
+                    style={{ padding: '8px 16px', fontSize: '0.82rem' }}
+                  >
+                    <ShieldCheck size={15} /> Admin Console
                   </button>
                 )}
                 <button 

@@ -37,6 +37,7 @@ export default function HomePage({
   const [requestNotice, setRequestNotice] = useState(null);
   const [highlightedMealId, setHighlightedMealId] = useState(null);
   const [selectedMealForModal, setSelectedMealForModal] = useState(null);
+  const [registrationNoticeOpen, setRegistrationNoticeOpen] = useState(false);
 
   const categories = ['ALL', 'Prepared meals', 'Rice & Curry', 'Bakery items', 'Bread & Roti', 'Fruits', 'Vegetables'];
   const districts = ['ALL', 'Vavuniya', 'Jaffna', 'Kilinochchi', 'Mannar', 'Anuradhapura'];
@@ -51,8 +52,18 @@ export default function HomePage({
     setHeroCardIndex((prev) => (prev - 1 + foodListings.length) % foodListings.length);
   };
 
+  const requireRecipientRegistration = () => {
+    if (currentRole !== 'recipient') {
+      setRegistrationNoticeOpen(true);
+      return false;
+    }
+    return true;
+  };
+
   // Scroll directly to the selected meal in the Available Food section and highlight it
   const handleViewDetails = (meal) => {
+    if (!requireRecipientRegistration()) return;
+
     // Clear any active search or category filters to ensure this meal is rendered
     setSelectedCategory('ALL');
     setSelectedDistrict('ALL');
@@ -89,14 +100,11 @@ export default function HomePage({
   });
 
   const handleRequestClick = (meal) => {
-    if (currentRole === 'visitor') {
-      setRequestNotice(`To request portions of "${meal.title}", please sign in or register as a Recipient Organization.`);
-      setTimeout(() => setRequestNotice(null), 5000);
-    } else {
-      if (onClaimMeal) onClaimMeal(meal.id);
-      setRequestNotice(`Portion request registered with ${meal.donorName} for "${meal.title}". Dispatch coordination active.`);
-      setTimeout(() => setRequestNotice(null), 5000);
-    }
+    if (!requireRecipientRegistration()) return;
+
+    if (onClaimMeal) onClaimMeal(meal.id);
+    setRequestNotice(`Portion request registered with ${meal.donorName} for "${meal.title}". Dispatch coordination active.`);
+    setTimeout(() => setRequestNotice(null), 5000);
   };
 
   return (
@@ -247,6 +255,7 @@ export default function HomePage({
                     className="fr-btn fr-btn-secondary" 
                     style={{ fontSize: '0.84rem', padding: '8px 14px', cursor: 'pointer' }}
                     onClick={() => {
+                      if (!requireRecipientRegistration()) return;
                       if (onOpenDonorPage) {
                         onOpenDonorPage(currentHeroMeal);
                       } else if (setCurrentRole) {
@@ -297,12 +306,76 @@ export default function HomePage({
         </div>
       )}
 
+      {registrationNoticeOpen && (
+        <div className="fr-modal-backdrop" onClick={() => setRegistrationNoticeOpen(false)}>
+          <div
+            className="fr-registration-notice-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="registration-notice-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="fr-registration-notice-close"
+              onClick={() => setRegistrationNoticeOpen(false)}
+              aria-label="Close registration notice"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="fr-registration-notice-heading">
+              <div className="fr-registration-notice-icon">
+                <ShieldCheck size={24} />
+              </div>
+              <div>
+                <span>Access notice</span>
+                <h2 id="registration-notice-title">Organization Registration Required</h2>
+              </div>
+            </div>
+
+            <p className="fr-registration-notice-copy">
+              Food details and requests are available to registered recipient organizations.
+            </p>
+
+            <ul className="fr-registration-notice-points">
+              <li><CheckCircle2 size={17} /> Register your organization details.</li>
+              <li><CheckCircle2 size={17} /> Sign in after registration.</li>
+              <li><CheckCircle2 size={17} /> View details and request available food.</li>
+            </ul>
+
+            <div className="fr-registration-notice-actions">
+              <button
+                type="button"
+                className="fr-btn fr-btn-primary"
+                onClick={() => {
+                  setRegistrationNoticeOpen(false);
+                  setCurrentPage('register');
+                }}
+              >
+                Register Organization <ArrowRight size={16} />
+              </button>
+              <button
+                type="button"
+                className="fr-btn fr-btn-secondary"
+                onClick={() => {
+                  setRegistrationNoticeOpen(false);
+                  setCurrentPage('login');
+                }}
+              >
+                Organization Sign In
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ====================================================================
           2. HOW FOOD RESCUE WORKS (id="how-it-works")
           ==================================================================== */}
       <section className="fr-section" id="how-it-works">
         <div className="fr-container">
-          <div className="fr-section-header">
+          <div className="fr-section-header fr-how-it-works-header">
             <div className="fr-hero-pill-badge" style={{ margin: '0 auto 16px auto' }}>
               SEAMLESS END-TO-END WORKFLOW
             </div>
@@ -346,51 +419,6 @@ export default function HomePage({
             <p className="fr-section-subtitle">
               Live discovery feed of verified commercial food postings ready for community pickup
             </p>
-          </div>
-
-          {/* Policy Banner */}
-          <div style={{
-            background: 'var(--fr-bg-subtle)',
-            border: '1px solid var(--fr-border-card)',
-            borderRadius: '16px',
-            padding: '18px 24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '16px',
-            marginBottom: '28px',
-            flexWrap: 'wrap'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <div style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '10px',
-                background: 'rgba(25, 195, 125, 0.15)',
-                color: 'var(--fr-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <ShieldCheck size={20} />
-              </div>
-              <div>
-                <strong style={{ color: 'var(--fr-text-heading)', display: 'block', fontSize: '0.94rem' }}>
-                  Open Public Directory • Request Access Policy
-                </strong>
-                <span style={{ color: 'var(--fr-text-muted)', fontSize: '0.84rem' }}>
-                  Surplus food details, timing, and hygiene logs are openly viewable by anyone. Portion requests are reserved for verified community organizations.
-                </span>
-              </div>
-            </div>
-            <button 
-              type="button"
-              className="fr-btn fr-btn-secondary" 
-              style={{ fontSize: '0.84rem', padding: '8px 16px' }}
-              onClick={() => setCurrentPage('register')}
-            >
-              Organization Request Policy <ArrowRight size={14} />
-            </button>
           </div>
 
           {/* Search & Filter Controls */}
@@ -486,7 +514,9 @@ export default function HomePage({
                       type="button"
                       className="fr-btn fr-btn-ghost"
                       style={{ padding: '6px 10px', fontSize: '0.8rem', color: 'var(--fr-primary)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '5px' }}
-                      onClick={() => setSelectedMealForModal(meal)}
+                      onClick={() => {
+                        if (requireRecipientRegistration()) setSelectedMealForModal(meal);
+                      }}
                       title="View all specifications for this meal"
                     >
                       <Info size={14} /> View Details
@@ -691,6 +721,13 @@ export default function HomePage({
               <p style={{ color: 'var(--fr-text-body)', lineHeight: 1.6, fontSize: '0.9rem', marginBottom: '18px' }}>
                 {selectedMealForModal.description}
               </p>
+
+              {selectedMealForModal.ingredients && (
+                <div className="fr-meal-ingredients">
+                  <span>Ingredients</span>
+                  <p>{selectedMealForModal.ingredients}</p>
+                </div>
+              )}
 
               <div style={{ 
                 background: 'var(--fr-bg-subtle)', 

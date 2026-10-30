@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DonorLayout from './pages/donor/DonorLayout';
+import RecipientLayout from './pages/recipient/RecipientLayout';
+import AdminLayout from './pages/admin/AdminLayout';
 import { INITIAL_FOOD_POSTINGS } from './data/mockData';
 
 export default function App() {
@@ -56,7 +58,8 @@ export default function App() {
       location: 'Vavuniya Town (1.2 km)',
       district: 'Vavuniya',
       category: 'Prepared meals',
-      image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+      image: newMealData.image || 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=800&q=80',
+      ingredients: newMealData.ingredients || 'Not specified',
       description: 'Emergency banquet surplus claimed directly via automated IVR telephone dispatch by ' + newMealData.recipient,
       storage: 'Insulated hot carriers',
       callAlertSent: true,
@@ -95,6 +98,30 @@ export default function App() {
         onMealPosted={handleMealPosted}
         initialNav={donorInitialNav}
         highlightedMealId={donorHighlightedMealId}
+      />
+    );
+  }
+
+  // If logged in as recipient, show the full Recipient Organization Portal
+  if (currentRole === 'recipient') {
+    return (
+      <RecipientLayout
+        setCurrentPage={setCurrentPage}
+        setCurrentRole={setCurrentRole}
+        foodListings={foodListings}
+        onClaimMeal={handleClaimMeal}
+      />
+    );
+  }
+
+  // If logged in as admin, show the full Admin Operations Central Portal
+  if (currentRole === 'admin') {
+    return (
+      <AdminLayout
+        setCurrentPage={setCurrentPage}
+        setCurrentRole={setCurrentRole}
+        foodListings={foodListings}
+        setFoodListings={setFoodListings}
       />
     );
   }
@@ -139,6 +166,7 @@ export default function App() {
             setCurrentRole={setCurrentRole}
           />
         )}
+
       </div>
 
       {/* Footer */}
@@ -153,6 +181,7 @@ export default function App() {
         onClose={() => setCallModalOpen(false)}
         onMealPosted={handleMealPosted}
       />
+
     </div>
   );
 }

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {
   User, Building2, ShieldCheck, Mail, Phone, MapPin,
-  Award, CheckCircle2, Clock, Edit3, Save, X, Utensils,
-  Thermometer, Bell, Sparkles, FileText, Navigation, ExternalLink
+  Award, CheckCircle2, Edit3, Save, X, Utensils,
+  Sparkles, FileText, ExternalLink, UserX, AlertTriangle
 } from 'lucide-react';
 
-export default function DonorProfilePage() {
+export default function DonorProfilePage({ onDeactivateAccount }) {
   const [isEditing, setIsEditing] = useState(false);
   const [saveToast, setSaveToast] = useState(false);
+  const [showDeactivateConfirm, setShowDeactivateConfirm] = useState(false);
 
   // Profile data
   const [profile, setProfile] = useState({
@@ -24,14 +25,7 @@ export default function DonorProfilePage() {
     phiLicense: 'PHI-VAV-2024-089 (Grade A Premium)',
     kitchenType: 'Commercial Banquet & Hotel Kitchen',
     capacity: '500+ covers per day',
-    pickupGate: 'Gate 2 - Kitchen Service Bay & Loading Ramp',
-    lunchSlot: '02:00 PM - 04:00 PM',
-    dinnerSlot: '09:30 PM - 11:30 PM',
-    storageFacilities: 'Commercial hot holding warmers (>65°C), Cold room (0-4°C), Insulated carriers',
-    bio: 'Premier hospitality provider in Vavuniya committed to zero food waste. Partnered with Food Rescue since March 2024 to redistribute banquet surplus cleanly and promptly to vetted welfare homes.',
-    smsNotifications: true,
-    callNotifications: true,
-    emailReceipts: true
+    bio: 'Premier hospitality provider in Vavuniya committed to zero food waste. Partnered with Food Rescue since March 2024 to redistribute banquet surplus cleanly and promptly to vetted welfare homes.'
   });
 
   const [formData, setFormData] = useState({ ...profile });
@@ -448,140 +442,45 @@ export default function DonorProfilePage() {
           </div>
         </div>
 
-        {/* Right Side: Kitchen Protocols & Alert Settings */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          
-          {/* Kitchen & Dispatch Protocols */}
-          <div className="fr-section-card">
-            <div className="fr-section-header">
-              <div>
-                <div className="fr-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Building2 size={18} color="var(--fr-primary)" />
-                  Kitchen & Surplus Pickup Logistics
-                </div>
-                <div className="fr-section-sub">Pickup protocols for registered recipient organizations</div>
+        <div className="fr-section-card fr-account-danger-card">
+          <div className="fr-section-header">
+            <div>
+              <div className="fr-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <UserX size={18} /> Account Management
               </div>
-            </div>
-
-            <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
-              
-              {/* Pickup Point */}
-              <div className="fr-profile-field-card">
-                <div className="fr-profile-field-icon">
-                  <Navigation size={20} />
-                </div>
-                <div className="fr-profile-field-content">
-                  <span className="fr-profile-field-label">Designated Handover Point</span>
-                  <span className="fr-profile-field-value">{profile.pickupGate}</span>
-                  <span style={{ fontSize: '0.76rem', color: 'var(--fr-text-muted)', marginTop: '2px' }}>
-                    Dedicated vehicle bay with ramp access for shelters & vans
-                  </span>
-                </div>
-              </div>
-
-              {/* Release Windows */}
-              <div className="fr-profile-field-card">
-                <div className="fr-profile-field-icon">
-                  <Clock size={20} />
-                </div>
-                <div className="fr-profile-field-content">
-                  <span className="fr-profile-field-label">Standard Surplus Release Slots</span>
-                  <span className="fr-profile-field-value" style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
-                    <span>Lunch Slot: <strong style={{ color: 'var(--fr-primary)' }}>{profile.lunchSlot}</strong></span>
-                    <span>Dinner Slot: <strong style={{ color: 'var(--fr-primary)' }}>{profile.dinnerSlot}</strong></span>
-                  </span>
-                </div>
-              </div>
-
-              {/* Storage Compliance */}
-              <div className="fr-profile-field-card">
-                <div className="fr-profile-field-icon">
-                  <Thermometer size={20} />
-                </div>
-                <div className="fr-profile-field-content">
-                  <span className="fr-profile-field-label">Temperature & Holding Standard</span>
-                  <span className="fr-profile-field-value" style={{ fontSize: '0.86rem' }}>
-                    {profile.storageFacilities}
-                  </span>
-                  <span style={{ fontSize: '0.76rem', color: 'var(--fr-primary)', fontWeight: '700', marginTop: '3px' }}>
-                    ✓ 100% PHI Sanitary Compliance Certified
-                  </span>
-                </div>
-              </div>
-
+              <div className="fr-section-sub">Manage the status of your donor account</div>
             </div>
           </div>
 
-          {/* Alert & Automated Dispatch Settings */}
-          <div className="fr-section-card">
-            <div className="fr-section-header">
-              <div>
-                <div className="fr-section-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Bell size={18} color="var(--fr-primary)" />
-                  Automated Alert & Notification Preferences
+          <div className="fr-account-danger-body">
+            <div className="fr-account-danger-icon"><AlertTriangle size={22} /></div>
+            <div>
+              <h3>Deactivate donor account</h3>
+              <p>Your profile and active food listings will no longer be available after deactivation.</p>
+            </div>
+
+            {!showDeactivateConfirm ? (
+              <button
+                type="button"
+                className="fr-account-deactivate-btn"
+                onClick={() => setShowDeactivateConfirm(true)}
+              >
+                <UserX size={16} /> Deactivate Account
+              </button>
+            ) : (
+              <div className="fr-account-confirm-box">
+                <strong>Are you sure you want to deactivate this account?</strong>
+                <div>
+                  <button type="button" className="fr-btn fr-btn-secondary" onClick={() => setShowDeactivateConfirm(false)}>
+                    Cancel
+                  </button>
+                  <button type="button" className="fr-account-deactivate-btn" onClick={onDeactivateAccount}>
+                    Yes, Deactivate
+                  </button>
                 </div>
-                <div className="fr-section-sub">Real-time alerts for incoming requests and pickups</div>
               </div>
-            </div>
-
-            <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '10px 0' }}>
-                <div style={{ paddingRight: '12px' }}>
-                  <div style={{ fontWeight: '600', fontSize: '0.88rem', color: 'var(--fr-text-heading)' }}>
-                    Automated Phone Dispatch (IVR)
-                  </div>
-                  <div style={{ fontSize: '0.76rem', color: 'var(--fr-text-muted)', marginTop: '2px' }}>
-                    Auto-ring shelter coordinators when large meal surplus is posted
-                  </div>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={profile.callNotifications}
-                  onChange={(e) => setProfile(p => ({ ...p, callNotifications: e.target.checked }))}
-                  style={{ width: '18px', height: '18px', accentColor: 'var(--fr-primary)', cursor: 'pointer', flexShrink: 0 }}
-                />
-              </label>
-
-              <div style={{ height: '1px', background: 'var(--fr-border-card)' }} />
-
-              <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '10px 0' }}>
-                <div style={{ paddingRight: '12px' }}>
-                  <div style={{ fontWeight: '600', fontSize: '0.88rem', color: 'var(--fr-text-heading)' }}>
-                    SMS Pickup & Driver Arrival Alerts
-                  </div>
-                  <div style={{ fontSize: '0.76rem', color: 'var(--fr-text-muted)', marginTop: '2px' }}>
-                    Receive instantaneous SMS when recipient vehicle arrives at gate
-                  </div>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={profile.smsNotifications}
-                  onChange={(e) => setProfile(p => ({ ...p, smsNotifications: e.target.checked }))}
-                  style={{ width: '18px', height: '18px', accentColor: 'var(--fr-primary)', cursor: 'pointer', flexShrink: 0 }}
-                />
-              </label>
-
-              <div style={{ height: '1px', background: 'var(--fr-border-card)' }} />
-
-              <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '10px 0' }}>
-                <div style={{ paddingRight: '12px' }}>
-                  <div style={{ fontWeight: '600', fontSize: '0.88rem', color: 'var(--fr-text-heading)' }}>
-                    Digital Handover Receipts
-                  </div>
-                  <div style={{ fontSize: '0.76rem', color: 'var(--fr-text-muted)', marginTop: '2px' }}>
-                    Email verified handover confirmation for CSR and sustainability logs
-                  </div>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={profile.emailReceipts}
-                  onChange={(e) => setProfile(p => ({ ...p, emailReceipts: e.target.checked }))}
-                  style={{ width: '18px', height: '18px', accentColor: 'var(--fr-primary)', cursor: 'pointer', flexShrink: 0 }}
-                />
-              </label>
-            </div>
+            )}
           </div>
-
         </div>
 
       </div>

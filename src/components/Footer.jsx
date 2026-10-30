@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/components.css';
-import { Leaf, MapPin, Phone, Mail } from 'lucide-react';
+import { MapPin, Phone, Mail } from 'lucide-react';
 
 export default function Footer({ setCurrentPage }) {
   const handleScrollTo = (sectionId) => {
@@ -17,13 +17,6 @@ export default function Footer({ setCurrentPage }) {
         <div className="fr-footer-custom-grid">
           {/* Column 1: Brand & Regional Hub */}
           <div className="fr-footer-brand-col">
-            <div className="fr-footer-logo-row" onClick={() => setCurrentPage('home')}>
-              <div className="fr-footer-leaf-icon">
-                <Leaf size={18} />
-              </div>
-              <span className="fr-footer-brand-title">Food Rescue</span>
-            </div>
-
             <p className="fr-footer-brand-desc">
               A Smart Food Surplus Redistribution System connecting commercial food donors with verified community organizations. Bridging food surplus with genuine hunger while slashing carbon emissions.
             </p>

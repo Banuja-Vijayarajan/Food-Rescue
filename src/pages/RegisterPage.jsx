@@ -70,15 +70,14 @@ export default function RegisterPage({ setCurrentPage, setCurrentRole }) {
   return (
     <div className="fr-auth-page-wrap">
       <div className="fr-register-card">
-        {/* Dynamic Heading at the very top */}
         <div className="fr-register-top-header">
-          <h1 className="fr-register-main-heading">
-            {selectedRole === 'donor' ? 'Food Donor Registration' : 'Recipient Organization Registration'}
-          </h1>
+          <div className="fr-register-brand-mark" aria-hidden="true">
+            <img src="/food-rescue-logo.png" alt="" />
+          </div>
+          <h1 className="fr-register-main-heading">Register Organization</h1>
+          <div className="fr-register-brand-badge">Food Rescue • Every Meal Counts</div>
           <p className="fr-register-sub-heading">
-            {selectedRole === 'donor' 
-              ? 'Register commercial surplus kitchen to redistribute quality edible food.' 
-              : 'Register shelter, orphanage or charity to receive free surplus meals.'}
+            Join the certified surplus redistribution network in Northern Sri Lanka.
           </p>
         </div>
 

@@ -957,6 +957,246 @@
   padding-bottom: 14px;
   margin-bottom: 16px;
 }
+
+/* Donor profile account deactivation */
+.fr-account-danger-card {
+  align-self: start;
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.fr-account-danger-card .fr-section-title {
+  color: #f87171;
+}
+
+.fr-account-danger-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px;
+}
+
+.fr-account-danger-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+}
+
+.fr-account-danger-body h3 {
+  margin-bottom: 6px;
+  color: var(--fr-text-heading);
+  font-size: 1rem;
+}
+
+.fr-account-danger-body p {
+  color: var(--fr-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.fr-account-deactivate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(239, 68, 68, 0.55);
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.12);
+  color: #f87171;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--fr-transition);
+}
+
+.fr-account-deactivate-btn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.fr-account-confirm-box {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--fr-text-heading);
+}
+
+.fr-account-confirm-box > div {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* Post Food image upload and preset selector */
+.fr-food-image-section {
+  padding: 20px;
+  border: 1px solid var(--fr-border-card);
+  border-radius: 14px;
+  background: var(--fr-bg-subtle);
+}
+
+.fr-food-image-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.fr-food-image-section-header label {
+  display: block;
+  color: var(--fr-text-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.fr-food-image-section-header p,
+.fr-food-image-upload-row small {
+  margin-top: 4px;
+  color: var(--fr-text-muted);
+  font-size: 0.76rem;
+}
+
+.fr-food-image-section-header > span {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(25, 195, 125, 0.12);
+  color: var(--fr-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.fr-food-image-preview {
+  position: relative;
+  height: 230px;
+  overflow: hidden;
+  border: 1px solid var(--fr-border-card);
+  border-radius: 12px;
+  background: var(--fr-bg-card);
+}
+
+.fr-food-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fr-food-image-preview > div {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: rgba(5, 24, 15, 0.82);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+}
+
+.fr-food-image-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+
+.fr-food-image-upload-btn,
+.fr-food-image-remove-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid var(--fr-primary);
+  border-radius: 9px;
+  background: rgba(25, 195, 125, 0.1);
+  color: var(--fr-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fr-food-image-upload-btn input {
+  display: none;
+}
+
+.fr-food-image-remove-btn {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
+}
+
+.fr-food-image-error {
+  margin: -4px 0 12px;
+  color: #f87171;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.fr-food-image-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.fr-food-image-preset {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: var(--fr-bg-card);
+  color: var(--fr-text-heading);
+  cursor: pointer;
+}
+
+.fr-food-image-preset.selected {
+  border-color: var(--fr-primary);
+  box-shadow: 0 0 0 3px rgba(25, 195, 125, 0.12);
+}
+
+.fr-food-image-preset img {
+  display: block;
+  width: 100%;
+  height: 78px;
+  object-fit: cover;
+}
+
+.fr-food-image-preset span {
+  display: block;
+  padding: 8px 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.fr-food-image-preset svg {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  color: #fff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.65));
+}
+
+@media (max-width: 680px) {
+  .fr-food-image-presets {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fr-food-image-preview {
+    height: 190px;
+  }
+}
 .fr-cert-verified-pill {
   display: inline-flex;
   align-items: center;
