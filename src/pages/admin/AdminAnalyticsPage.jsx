@@ -168,40 +168,46 @@ export default function AdminAnalyticsPage() {
 
   // Export CSV
   const handleExportCSV = () => {
-    let headers = '';
+    let headers = [];
     let rows = [];
+    const csvRow = (values) => values.map((value) => {
+      const escapedValue = String(value ?? '').replace(/"/g, '""');
+      return `"${escapedValue}"`;
+    }).join(',');
 
     if (activeReportTab === 'donor-ratings') {
-      headers = 'Name,District,DonationsCount,PortionsRescued,WeightKg,Rating,PunctualityScore,HygieneCompliance,Status\n';
+      headers = ['Name', 'District', 'DonationsCount', 'PortionsRescued', 'WeightKg', 'Rating', 'PunctualityScore', 'HygieneCompliance', 'Status'];
       rows = DONOR_RATINGS_REPORT.map(d =>
-        `"${d.name}","${d.district}",${d.donationsCount},${d.portionsRescued},${d.weightKg},${d.rating},${d.punctualityScore},${d.hygieneCompliance},"${d.status}"\n`
+        [d.name, d.district, d.donationsCount, d.portionsRescued, d.weightKg, d.rating, d.punctualityScore, d.hygieneCompliance, d.status]
       );
     } else if (activeReportTab === 'recipient-activity') {
-      headers = 'Name,District,RequestsMade,PortionsReceived,BeneficiariesFed,PickupPunctuality,FulfillmentRate,Rating\n';
+      headers = ['Name', 'District', 'RequestsMade', 'PortionsReceived', 'BeneficiariesFed', 'PickupPunctuality', 'FulfillmentRate', 'Rating'];
       rows = RECIPIENT_ACTIVITY_REPORT.map(r =>
-        `"${r.name}","${r.district}",${r.requestsMade},${r.portionsReceived},${r.beneficiariesFed},${r.pickupPunctuality},${r.fulfillmentRate},${r.rating}\n`
+        [r.name, r.district, r.requestsMade, r.portionsReceived, r.beneficiariesFed, r.pickupPunctuality, r.fulfillmentRate, r.rating]
       );
     } else if (activeReportTab === 'quantity-quality') {
-      headers = 'Category,Portions,WeightKg,SharePercent,AverageTemperatureHolding,SafetyPassRate\n';
+      headers = ['Category', 'Portions', 'WeightKg', 'SharePercent', 'AverageTemperatureHolding', 'SafetyPassRate'];
       rows = FOOD_QUANTITY_QUALITY_REPORT.map(q =>
-        `"${q.category}",${q.portions},${q.weightKg},${q.sharePercent},"${q.averageTemperatureHolding}",${q.safetyPassRate}\n`
+        [q.category, q.portions, q.weightKg, q.sharePercent, q.averageTemperatureHolding, q.safetyPassRate]
       );
     } else {
-      headers = 'Metric,Value\n';
+      headers = ['Metric', 'Value'];
       rows = [
-        `"Total Meals Rescued",${ADMIN_STATS.totalMealsRescued}\n`,
-        `"Total Food Weight Kg",${ADMIN_STATS.totalFoodWeightKg}\n`,
-        `"Average Cycle Speed Minutes",${ADMIN_STATS.avgRescueTimeMinutes}\n`,
-        `"Safety Compliance Rate",${ADMIN_STATS.overallSafetyComplianceRate}%\n`,
+        ['Total Meals Rescued', ADMIN_STATS.totalMealsRescued],
+        ['Total Food Weight Kg', ADMIN_STATS.totalFoodWeightKg],
+        ['Average Cycle Speed Minutes', ADMIN_STATS.avgRescueTimeMinutes],
+        ['Safety Compliance Rate', `${ADMIN_STATS.overallSafetyComplianceRate}%`],
       ];
     }
 
-    const blob = new Blob([[headers].concat(rows).join('')], { type: 'text/csv' });
+    const csvContent = [csvRow(headers), ...rows.map(csvRow)].join('\r\n');
+    const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `food_rescue_${activeReportTab}_${Date.now()}.csv`;
     a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
     showToast('Report data exported to CSV.');
   };
 
@@ -244,6 +250,7 @@ export default function AdminAnalyticsPage() {
         {/* Action Controls */}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <select
+            aria-label="Report date range"
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
             className="fr-form-select"
